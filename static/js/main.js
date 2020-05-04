@@ -1,4 +1,4 @@
-//import { randomIntFromRange } from "./utils";
+import { randomIntFromRange } from "./utils.js";
 // basic setup
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
@@ -26,9 +26,9 @@ addEventListener("resize", () => {
   canvas.height = innerHeight;
   init();
 });
-function randomIntFromRange(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
+// function randomIntFromRange(min, max) {
+//   return Math.floor(Math.random() * (max - min + 1) + min);
+// }
 // Objects
 class Circle {
   constructor(x, y, radius, color) {
