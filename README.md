@@ -1,13 +1,13 @@
-## canvas project
+# canvas project
 Simple animation with gravitaiton and collision detection
 
-# Technologies
+## Technologies
 
 - HTML5 Canvas
 - JS
-# Live
+## Live
 
 currently in progress...
-# Author
+## Author
 
 Krzysztof Skoczek
