@@ -150,7 +150,6 @@ const initSmallCircles = () => {
     );
     dx = randomIntFromRange(1, 3);
     dy = randomIntFromRange(1, 3);
-    console.log(ys);
     smallCircles.push(new SmallCircle(xs, ys, dx, dy, smallRadius, "red"));
   }
 };
