@@ -79,10 +79,10 @@ class SmallCircle {
 
     // mouse interactivity
     if (
-      mouse.x - this.xs < 40 &&
-      mouse.x - this.xs > -40 &&
-      mouse.y - this.ys < 40 &&
-      mouse.y - this.ys > -40
+      mouse.x - this.xs < 80 &&
+      mouse.x - this.xs > -80 &&
+      mouse.y - this.ys < 80 &&
+      mouse.y - this.ys > -80
     ) {
       if (this.smallRadius < maxScRadius) {
         this.smallRadius += 1;
@@ -96,10 +96,9 @@ class SmallCircle {
 }
 
 class BigCircle {
-  constructor(x, y, dxB, dyB, radius, color) {
+  constructor(x, y, dyB, radius, color) {
     this.x = x;
     this.y = y;
-    this.dxB = dxB;
     this.dyB = dyB;
     this.radius = radius;
     this.color = color;
@@ -121,7 +120,7 @@ class BigCircle {
         initSmallCircles();
       }
     } else {
-      this.dyB += gravity * 0.2;
+      this.dyB += gravity * 0.1;
     }
     this.y += this.dyB;
     this.draw();
@@ -130,28 +129,28 @@ class BigCircle {
 
 const init = () => {
   for (let i = 0; i < 1; i++) {
-    bRadius = 85;
+    bRadius = 185;
     xB = randomIntFromRange(bRadius, canvas.width - bRadius);
-    yB = 93;
-    dx = randomIntFromRange(-1, 1);
-    dy = randomIntFromRange(-2, 2);
-    bigCircles.push(new BigCircle(xB, yB, dx, dy, bRadius, colorOfBc));
+    yB = bRadius;
+    dy = 0.1;
+    bigCircles.push(new BigCircle(xB, yB, dy, bRadius, colorOfBc));
   }
 };
 const initSmallCircles = () => {
   smallCircles = [];
-  for (let j = 0; j < 480; j++) {
+  for (let j = 0; j < 500; j++) {
     smallRadius = randomIntFromRange(4, 10);
     xs = randomIntFromRange(
-      posXToExplode - smallRadius * (j * 0.1),
-      posXToExplode - smallRadius * (j * 1.1)
+      posXToExplode + smallRadius,
+      canvas.width - posXToExplode
     );
     ys = randomIntFromRange(
-      posYToExplode - smallRadius + (j + 20),
-      posYToExplode - smallRadius - j
+      posYToExplode + smallRadius,
+      canvas.height - posYToExplode
     );
     dx = randomIntFromRange(1, 3);
     dy = randomIntFromRange(1, 3);
+    console.log(ys);
     smallCircles.push(new SmallCircle(xs, ys, dx, dy, smallRadius, "red"));
   }
 };
