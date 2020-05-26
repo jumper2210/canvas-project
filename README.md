@@ -7,7 +7,7 @@ Simple animation with gravitaiton and collision detection
 - JS
 ## Live
 
-currently in progress...
+https://jumper2210.github.io/canvas-project/
 ## Author
 
 Krzysztof Skoczek
