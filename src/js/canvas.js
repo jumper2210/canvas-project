@@ -6,14 +6,16 @@ const c = canvas.getContext("2d");
 canvas.width = innerWidth;
 canvas.height = innerHeight;
 
-const mouse = {
-  x: innerWidth / 2,
-  Y: innerHeight / 2,
+let mouse = {
+  x: undefined,
+  y: undefined,
 };
 //variables
+const colorOfBc = "#1d3e53";
 let bigCircles = [];
 let bcLength = bigCircles.length;
 let smallCircles = [];
+let scLength = smallCircles.length;
 let bRadius;
 let xB;
 let yB;
@@ -22,17 +24,22 @@ let dy;
 let xs;
 let ys;
 let smallRadius;
+const minScRadius = 10;
+const maxScRadius = 60;
 const friction = 0.19;
 const gravity = 1;
-// addEventListener("mousemove", (event) => {
-//   mouse.x = event.clientX;
-//   mouse.Y = event.clientY;
-//   init();
-// });
+let posXToExplode;
+let posYToExplode;
+let colorArray = ["#476d7c", "#0d7377", "#14ffec"];
+
+addEventListener("mousemove", (event) => {
+  mouse.x = event.x;
+  mouse.y = event.y;
+});
 addEventListener("resize", () => {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
-  bcLength === 1 ? 0 : init();
+  initSmallCircles();
 });
 // Objects
 class SmallCircle {
@@ -42,19 +49,17 @@ class SmallCircle {
     this.dx = dx;
     this.dy = dy;
     this.smallRadius = smallRadius;
-    this.color = color;
+    this.minScRadius = smallRadius;
+    this.color = colorArray[randomIntFromRange(0, colorArray.length)];
   }
   draw() {
     c.beginPath();
     c.arc(this.xs, this.ys, this.smallRadius, 0, Math.PI * 2, false);
     c.fillStyle = this.color;
-    c.fill();
     c.stroke();
-    c.closePath();
+    c.fill();
   }
   update() {
-    console.log(this.ys, this.dy, "tutaj Y");
-
     if (
       this.xs + this.smallRadius > innerWidth ||
       this.xs - this.smallRadius < 0
@@ -71,6 +76,20 @@ class SmallCircle {
 
     this.xs += this.dx;
     this.ys += this.dy;
+
+    // mouse interactivity
+    if (
+      mouse.x - this.xs < 40 &&
+      mouse.x - this.xs > -40 &&
+      mouse.y - this.ys < 40 &&
+      mouse.y - this.ys > -40
+    ) {
+      if (this.smallRadius < maxScRadius) {
+        this.smallRadius += 1;
+      }
+    } else if (this.smallRadius > this.minScRadius) {
+      this.smallRadius -= 1;
+    }
 
     this.draw();
   }
@@ -94,20 +113,12 @@ class BigCircle {
     c.closePath();
   }
   update() {
+    posXToExplode = this.x;
+    posYToExplode = this.y;
     if (this.y + this.radius + this.dyB > canvas.height) {
       bigCircles = [];
-      if (bcLength === 0) {
-        bigCircles = [];
-        for (let j = 0; j < 3; j++) {
-          smallRadius = 15;
-          xs = randomIntFromRange(smallRadius, canvas.width - smallRadius);
-          ys = 200;
-          dx = randomIntFromRange(-1, 1);
-          dy = 2;
-          smallCircles.push(
-            new SmallCircle(xs, ys, dx, dy, smallRadius, "red")
-          );
-        }
+      if (bcLength == 0 && scLength < 100) {
+        initSmallCircles();
       }
     } else {
       this.dyB += gravity * 0.2;
@@ -124,13 +135,30 @@ const init = () => {
     yB = 93;
     dx = randomIntFromRange(-1, 1);
     dy = randomIntFromRange(-2, 2);
-    bigCircles.push(new BigCircle(xB, yB, dx, dy, bRadius, "white"));
+    bigCircles.push(new BigCircle(xB, yB, dx, dy, bRadius, colorOfBc));
   }
 };
-
+const initSmallCircles = () => {
+  smallCircles = [];
+  for (let j = 0; j < 480; j++) {
+    smallRadius = randomIntFromRange(4, 10);
+    xs = randomIntFromRange(
+      posXToExplode - smallRadius * (j * 0.1),
+      posXToExplode - smallRadius * (j * 1.1)
+    );
+    ys = randomIntFromRange(
+      posYToExplode - smallRadius + (j + 20),
+      posYToExplode - smallRadius - j
+    );
+    dx = randomIntFromRange(1, 3);
+    dy = randomIntFromRange(1, 3);
+    smallCircles.push(new SmallCircle(xs, ys, dx, dy, smallRadius, "red"));
+  }
+};
 const animate = () => {
   requestAnimationFrame(animate);
   c.clearRect(0, 0, canvas.width, canvas.height);
+
   bigCircles.forEach((bc) => {
     bc.update();
   });
