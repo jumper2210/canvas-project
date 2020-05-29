@@ -79,10 +79,10 @@ class SmallCircle {
 
     // mouse interactivity
     if (
-      mouse.x - this.xs < 80 &&
-      mouse.x - this.xs > -80 &&
-      mouse.y - this.ys < 80 &&
-      mouse.y - this.ys > -80
+      mouse.x - this.xs < 50 &&
+      mouse.x - this.xs > -50 &&
+      mouse.y - this.ys < 50 &&
+      mouse.y - this.ys > -50
     ) {
       if (this.smallRadius < maxScRadius) {
         this.smallRadius += 1;
@@ -129,7 +129,7 @@ class BigCircle {
 
 const init = () => {
   for (let i = 0; i < 1; i++) {
-    bRadius = 185;
+    bRadius = 125;
     xB = randomIntFromRange(bRadius, canvas.width - bRadius);
     yB = bRadius;
     dy = 0.1;
@@ -138,7 +138,7 @@ const init = () => {
 };
 const initSmallCircles = () => {
   smallCircles = [];
-  for (let j = 0; j < 500; j++) {
+  for (let j = 0; j < 300; j++) {
     smallRadius = randomIntFromRange(4, 10);
     xs = randomIntFromRange(
       posXToExplode + smallRadius,
@@ -148,8 +148,8 @@ const initSmallCircles = () => {
       posYToExplode + smallRadius,
       canvas.height - posYToExplode
     );
-    dx = randomIntFromRange(1, 3);
-    dy = randomIntFromRange(1, 3);
+    dx = randomIntFromRange(1, 2);
+    dy = randomIntFromRange(1, 2);
     smallCircles.push(new SmallCircle(xs, ys, dx, dy, smallRadius, "red"));
   }
 };
